@@ -8,6 +8,9 @@ export function DataUploader({ setData }) {
                 setData(results.data);
                 alert("Data uploaded successfully!");
                 },
+            error: (error) => {
+                alert("Error: " + error);
+            }
         });
     };
 
