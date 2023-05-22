@@ -1,23 +1,29 @@
-import Papa from "papaparse";
+import Papa from 'papaparse';
 import {stringToDate} from '../../utils/helpers.js';
-export function DataUploader({ setData }) {
+
+export function DataUploader({setData}) {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         Papa.parse(file, {
             header: true,
             complete: (results) => {
                 const data = results.data.map(x => {
-                    x.DateFrom = stringToDate(x.DateFrom, "yyyy/mm/dd");
-                    x.DateTo = x.DateTo === "NULL" ?
+                    x.DateFrom = stringToDate(x.DateFrom, 'yyyy/mm/dd');
+                    x.DateTo = x.DateTo === 'NULL' ?
                         new Date() :
-                        stringToDate(x.DateTo, "yyyy/mm/dd");
-                    return x
-                })
+                        stringToDate(x.DateTo, 'yyyy/mm/dd');
+                    return x;
+                }).filter(x=>{
+                    return x.EmpID !== undefined
+                        && x.ProjectID !== undefined
+                        && x.DateFrom !== undefined
+                        && x.DateTo !== undefined
+                }).sort((a, b) => a.EmpID.localeCompare(b.EmpID));
                 setData(data);
-                alert("Data uploaded successfully!");
-                },
+                alert('Data uploaded successfully!');
+            },
             error: (error) => {
-                alert("Error: " + error);
+                alert('Error: ' + error);
             }
         });
     };
@@ -26,7 +32,7 @@ export function DataUploader({ setData }) {
 
     return (
         <div>
-            <input type="file" onChange={handleFileUpload} />
+            <input type="file" onChange={handleFileUpload}/>
         </div>
     );
 }
