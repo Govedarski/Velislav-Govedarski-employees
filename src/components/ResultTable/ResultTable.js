@@ -34,7 +34,22 @@ export function ResultTable({data}) {
         }
     );
 
-    //TODO calculate days worked together
+    for (let pair of pairsData) {
+        const dateFrom = pair.employee1DateFrom > pair.employee2DateFrom
+            ? pair.employee1DateFrom
+            : pair.employee2DateFrom;
+        const dateTo = pair.employee1DateTo < pair.employee2DateTo
+            ? pair.employee1DateTo
+            : pair.employee2DateTo;
+        // Difference in days between two dates https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
+        pair.daysWorked = Math.ceil((dateTo - dateFrom)  / (1000 * 60 * 60 * 24));
+    }
+
+    pairsData = pairsData.filter((pair) => {
+        return pair.daysWorked > 0;
+    }).sort((a, b) => {
+        return b.daysWorked - a.daysWorked;
+    });
 
     console.log(pairsData)
 
