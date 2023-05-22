@@ -6,7 +6,7 @@ export function DataUploader({ setData }) {
         Papa.parse(file, {
             header: true,
             complete: (results) => {
-                let data = results.data.map(x => {
+                const data = results.data.map(x => {
                     x.DateFrom = stringToDate(x.DateFrom, "yyyy/mm/dd");
                     x.DateTo = x.DateTo === "NULL" ?
                         new Date() :
