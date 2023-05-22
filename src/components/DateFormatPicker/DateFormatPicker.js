@@ -19,26 +19,30 @@ export function DateFormatPicker({dateFormat, setDateFormat}) {
                 value={dateFormat[0]}
                 onChange={handleChange.bind(null,0)}>
             >
-                <option value={"dd"}>Day</option>
-                <option value={"mm"}>Month</option>
-                <option value={"yyyy"}>Year</option>
+                <Options/>
             </select>
             <select
                 value={dateFormat[1]}
                 onChange={handleChange.bind(null,1)}>
                 >
-                <option value={"dd"}>Day</option>
-                <option value={"mm"}>Month</option>
-                <option value={"yyyy"}>Year</option>
+                <Options/>
             </select>
             <select
                 value={dateFormat[2]}
                 onChange={handleChange.bind(null,2)}>
                 >
-                <option value={"dd"}>Day</option>
-                <option value={"mm"}>Month</option>
-                <option value={"yyyy"}>Year</option>
+            <Options/>
             </select>
         </div>
+    )
+}
+
+function Options() {
+    return(
+        <>
+            <option value={"dd"}>Day</option>
+            <option value={"mm"}>Month</option>
+            <option value={"yyyy"}>Year</option>
+        </>
     )
 }
