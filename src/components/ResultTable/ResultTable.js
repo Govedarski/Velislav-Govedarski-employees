@@ -1,10 +1,12 @@
 import {useEffect, useState} from 'react';
+import {calculateDaysWorkedTogether} from '../../utils/helpers.js';
 
 export function ResultTable({data}) {
-    let pairsData = [];
     const [dataToShow, setDataToShow] = useState([]);
 
     useEffect(() => {
+        let pairsData = [];
+
         for (const dataRow of data) {
             const pairsOnThisProject = pairsData.filter((pair) => {
                 return pair.projectID === dataRow.ProjectID && pair.employee1ID !== dataRow.employee1ID;
@@ -18,8 +20,8 @@ export function ResultTable({data}) {
                 pair.employee2ID = dataRow.EmpID;
                 pair.employee2DateFrom = dataRow.DateFrom;
                 pair.employee2DateTo = dataRow.DateTo;
+                calculateDaysWorkedTogether(pair);
             }
-
 
             pairsData.push({
                 projectID: dataRow.ProjectID,
@@ -33,29 +35,14 @@ export function ResultTable({data}) {
         }
 
         pairsData = pairsData.filter((pair) => {
-                return pair.employee2ID !== null;
+                return pair.employee2ID !== null && pair.daysWorked > 0;
             }
-        );
-
-        for (let pair of pairsData) {
-            const dateFrom = pair.employee1DateFrom > pair.employee2DateFrom
-                ? pair.employee1DateFrom
-                : pair.employee2DateFrom;
-            const dateTo = pair.employee1DateTo < pair.employee2DateTo
-                ? pair.employee1DateTo
-                : pair.employee2DateTo;
-            // Difference in days between two dates https://stackoverflow.com/questions/3224834/get-difference-between-2-dates-in-javascript
-            pair.daysWorked = Math.ceil((dateTo - dateFrom) / (1000 * 60 * 60 * 24));
-        }
-
-        pairsData = pairsData.filter((pair) => {
-            return pair.daysWorked > 0;
-        }).sort((a, b) => {
+        ).sort((a, b) => {
             return b.daysWorked - a.daysWorked;
         });
 
 
-        const pairsWorkedTogetherAllProjects = []
+        const pairsWorkedTogetherAllProjects = [];
         const bestPairs = {key: null, employee1ID: null, employee2ID: null, daysWorked: 0};
 
         for (const pair of pairsData) {
@@ -77,9 +64,6 @@ export function ResultTable({data}) {
         }));
 
     }, [data]);
-
-
-
 
 
     return (
