@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 import {stringToDate} from '../../utils/helpers.js';
 
-export function DataUploader({setData}) {
+export function DataUploader({setData, dateFormat}) {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
         Papa.parse(file, {
@@ -11,7 +11,7 @@ export function DataUploader({setData}) {
                     x.DateFrom = stringToDate(x.DateFrom, 'yyyy/mm/dd');
                     x.DateTo = x.DateTo === 'NULL' ?
                         new Date() :
-                        stringToDate(x.DateTo, 'yyyy/mm/dd');
+                        stringToDate(x.DateTo, dateFormat.join('-'));
                     return x;
                 }).filter(x=>{
                     return x.EmpID !== undefined
@@ -28,7 +28,7 @@ export function DataUploader({setData}) {
         });
     };
 
-    // TODO: Add a button to clear the data. Add check on header names.
+    // TODO: Add a button to clear the data.
 
     return (
         <div>
