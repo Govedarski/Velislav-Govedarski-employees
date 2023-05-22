@@ -13,9 +13,8 @@ export function DataUploader({ setData }) {
                         stringToDate(x.DateTo, "yyyy/mm/dd");
                     return x
                 })
-
+                setData(data);
                 alert("Data uploaded successfully!");
-                console.log(data);
                 },
             error: (error) => {
                 alert("Error: " + error);
