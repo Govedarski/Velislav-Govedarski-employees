@@ -1,9 +1,15 @@
 import Papa from 'papaparse';
 import {stringToDate} from '../../utils/helpers.js';
+import styles from './DataUploader.module.css';
 
 export function DataUploader({setData, dateFormat}) {
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
+        if (!file) {
+            setData([]);
+            return;
+        }
+
         Papa.parse(file, {
             header: true,
             complete: (results) => {
@@ -13,11 +19,11 @@ export function DataUploader({setData, dateFormat}) {
                         new Date() :
                         stringToDate(x.DateTo, dateFormat.join('-'));
                     return x;
-                }).filter(x=>{
+                }).filter(x => {
                     return x.EmpID !== undefined
                         && x.ProjectID !== undefined
                         && x.DateFrom !== undefined
-                        && x.DateTo !== undefined
+                        && x.DateTo !== undefined;
                 }).sort((a, b) => a.EmpID.localeCompare(b.EmpID));
                 setData(data);
                 alert('Data uploaded successfully!');
@@ -28,10 +34,10 @@ export function DataUploader({setData, dateFormat}) {
         });
     };
 
-    // TODO: Add a button to clear the data.
 
     return (
-        <div>
+        <div className={styles.container}>
+            <h3>Upload your data</h3>
             <input type="file" onChange={handleFileUpload}/>
         </div>
     );

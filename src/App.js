@@ -9,7 +9,7 @@ function App() {
     const [dateFormat, setDateFormat] = useState(["yyyy", "mm", "dd"]);
 
     return (
-        <div>
+        <div className={"container"}>
             <DateFormatPicker
                 dateFormat={dateFormat}
                 setDateFormat={setDateFormat}

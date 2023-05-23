@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {calculateDaysWorkedTogether} from '../../utils/helpers.js';
-
+import styles from './ResultTable.module.css';
 export function ResultTable({data}) {
     const [dataToShow, setDataToShow] = useState([]);
 
@@ -68,7 +68,7 @@ export function ResultTable({data}) {
 
     return (
         <div>
-            <table>
+            <table className={styles.table}>
                 <thead>
                     <tr>
                         <th>Employee ID #1</th>
